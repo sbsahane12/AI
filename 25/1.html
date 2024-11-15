@@ -1,0 +1,48 @@
+# Q.1) Write a program to find and display perfect numbers from list
+
+def is_perfect_number(n):
+    divisors_sum = sum(i for i in range(1, n) if n % i == 0)
+    return divisors_sum == n
+
+def perfect_numbers_from_list(numbers):
+    perfect_numbers = [num for num in numbers if is_perfect_number(num)]
+    return perfect_numbers
+
+numbers = [6, 28, 12, 496, 35, 15]
+perfect_numbers = perfect_numbers_from_list(numbers)
+print("Perfect numbers in the list:", perfect_numbers)
+
+# Q.2) Write a Python program to solve 8-Queen puzzle problem
+
+def print_board(board):
+    for row in board:
+        print(' '.join(['Q' if x else '.' for x in row]))
+    print()
+
+def is_safe(board, row, col):
+    for i in range(row):
+        if board[i][col] == 1:
+            return False
+    for i, j in zip(range(row-1, -1, -1), range(col-1, -1, -1)):
+        if board[i][j] == 1:
+            return False
+    for i, j in zip(range(row-1, -1, -1), range(col+1, len(board))):
+        if board[i][j] == 1:
+            return False
+    return True
+
+def solve_8_queen(board, row):
+    if row == len(board):
+        print_board(board)
+        return True
+    for col in range(len(board)):
+        if is_safe(board, row, col):
+            board[row][col] = 1
+            if solve_8_queen(board, row + 1):
+                return True
+            board[row][col] = 0  # Backtrack
+    return False
+
+board = [[0 for _ in range(8)] for _ in range(8)]
+if not solve_8_queen(board, 0):
+    print("No solution exists.")

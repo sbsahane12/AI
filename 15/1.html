@@ -1,0 +1,50 @@
+# Q.1) Write a python Program to print Fibonacci series
+
+def fibonacci(n):
+    a, b = 0, 1
+    for _ in range(n):
+        print(a, end=" ")
+        a, b = b, a + b
+
+n = int(input("Enter the number of terms in the Fibonacci series: "))
+fibonacci(n)
+
+# Q.2) Write a program to implement Iterative Deepening DFS algorithm. [Goal Node = G]
+
+def dfs(graph, start, goal, depth):
+    if depth == 0:
+        return None
+    if start == goal:
+        return [start]
+    for neighbor in graph.get(start, []):
+        path = dfs(graph, neighbor, goal, depth - 1)
+        if path:
+            return [start] + path
+    return None
+
+def iterative_deepening_dfs(graph, start, goal, max_depth):
+    for depth in range(max_depth):
+        path = dfs(graph, start, goal, depth)
+        if path:
+            return path
+    return None
+
+graph = {
+    'A': ['B', 'C'],
+    'B': ['D', 'E'],
+    'C': ['F'],
+    'D': ['G'],
+    'E': [],
+    'F': ['G'],
+    'G': []
+}
+
+start = 'A'
+goal = 'G'
+max_depth = 4
+path = iterative_deepening_dfs(graph, start, goal, max_depth)
+
+if path:
+    print("Path found:", " -> ".join(path))
+else:
+    print("No path found.")

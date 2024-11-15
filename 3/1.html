@@ -1,0 +1,40 @@
+# Python program to remove punctuations from the given string.
+
+def remove_punctuation(input_string):
+    punctuations = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
+    no_punct = ""
+    for char in input_string:
+        if char not in punctuations:
+            no_punct += char
+    return no_punct
+
+text = input("Enter a string: ")
+print("String without punctuation:", remove_punctuation(text))
+
+
+# Python program to implement Depth First Search algorithm.
+# Graph example used as input: Initial node = 2, Goal node = 7.
+
+def dfs(graph, start, goal, visited=None):
+    if visited is None:
+        visited = set()
+    visited.add(start)
+    print(start, end=" ")
+
+    if start == goal:
+        return True
+    for neighbor in graph[start]:
+        if neighbor not in visited:
+            if dfs(graph, neighbor, goal, visited):
+                return True
+    return False
+
+graph = {
+    2: [3, 4],
+    3: [5],
+    4: [6],
+    5: [7],
+    6: [],
+    7: [],
+}
+dfs(graph, start=2, goal=7)

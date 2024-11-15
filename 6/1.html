@@ -1,0 +1,52 @@
+# Q.1) Python Program to Print Lowercase and Uppercase Alphabets from a String
+
+def print_case_alphabets(input_string):
+    lowercase = []
+    uppercase = []
+
+    for char in input_string:
+        if char.islower():
+            lowercase.append(char)
+        elif char.isupper():
+            uppercase.append(char)
+
+    print("Lowercase Alphabets: ", ''.join(lowercase))
+    print("Uppercase Alphabets: ", ''.join(uppercase))
+
+# Example usage:
+input_string = "HelloWorld"
+print_case_alphabets(input_string)
+
+# Q.2) Python Program to Implement Breadth-First Search (BFS) Algorithm
+
+from collections import deque
+
+def bfs(graph, start, goal):
+    visited = set()
+    queue = deque([start])
+
+    while queue:
+        node = queue.popleft()
+        if node == goal:
+            print(node, end=" ")
+            return True
+        if node not in visited:
+            visited.add(node)
+            print(node, end=" ")
+            queue.extend(neighbor for neighbor in graph[node] if neighbor not in visited)
+    return False
+
+# Graph structure (adjacency list)
+graph = {
+    1: [2, 3],
+    2: [4, 5],
+    3: [6, 7],
+    4: [8],
+    5: [],
+    6: [],
+    7: [8],
+    8: []
+}
+
+# Calling the BFS function with start node 1 and goal node 8
+bfs(graph, start=1, goal=8)

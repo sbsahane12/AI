@@ -1,0 +1,52 @@
+# Q.1) Write a python program to accept a number and check whether prime or not
+
+def is_prime(number):
+    if number <= 1:
+        return False
+    for i in range(2, int(number**0.5) + 1):
+        if number % i == 0:
+            return False
+    return True
+
+number = int(input("Enter a number: "))
+if is_prime(number):
+    print(f"{number} is a prime number.")
+else:
+    print(f"{number} is not a prime number.")
+
+# Q.2) Write a Python program to solve 4 x 4 Queen problem
+
+def is_safe(board, row, col):
+    for i in range(col):
+        if board[row][i] == 1:
+            return False
+    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
+    for i, j in zip(range(row, len(board), 1), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
+    return True
+
+def solve(board, col):
+    if col >= len(board):
+        return True
+    for i in range(len(board)):
+        if is_safe(board, i, col):
+            board[i][col] = 1
+            if solve(board, col + 1):
+                return True
+            board[i][col] = 0
+    return False
+
+def print_board(board):
+    for row in board:
+        print(" ".join(["Q" if x else "." for x in row]))
+
+board = [[0 for _ in range(4)] for _ in range(4)]
+
+if solve(board, 0):
+    print("Solution to the 4x4 Queen problem:")
+    print_board(board)
+else:
+    print("No solution exists.")

@@ -1,0 +1,76 @@
+# Q.1) Write a python program to implement list operations (any 5)
+
+def list_operations():
+    my_list = [1, 2, 3, 4, 5]
+
+    my_list.append(6)
+    print("List after append:", my_list)
+
+    my_list.insert(2, 10)
+    print("List after insert:", my_list)
+
+    my_list.remove(4)
+    print("List after remove:", my_list)
+
+    popped_element = my_list.pop()
+    print("List after pop:", my_list)
+    print("Popped element:", popped_element)
+
+    my_list.sort()
+    print("List after sort:", my_list)
+
+list_operations()
+
+# Q.2) Write a Python program to implement heuristic search algorithm
+
+import heapq
+
+def heuristic_search(graph, start, goal, h):
+    open_list = []
+    heapq.heappush(open_list, (h[start], start, []))  # (f, current, path)
+    closed_list = set()
+
+    while open_list:
+        f, current, path = heapq.heappop(open_list)
+
+        if current in closed_list:
+            continue
+
+        closed_list.add(current)
+        path = path + [current]
+
+        if current == goal:
+            return path
+
+        for neighbor, cost in graph.get(current, []):
+            if neighbor not in closed_list:
+                heapq.heappush(open_list, (f + cost + h.get(neighbor, 0), neighbor, path))
+
+    return None
+
+graph = {
+    'A': [('B', 1), ('C', 4)],
+    'B': [('D', 1), ('E', 3)],
+    'C': [('E', 1)],
+    'D': [('G', 5)],
+    'E': [('G', 2)],
+    'G': []
+}
+
+h = {
+    'A': 6,
+    'B': 4,
+    'C': 2,
+    'D': 1,
+    'E': 1,
+    'G': 0
+}
+
+start = 'A'
+goal = 'G'
+path = heuristic_search(graph, start, goal, h)
+
+if path:
+    print("Path found:", " -> ".join(path))
+else:
+    print("No path found.")

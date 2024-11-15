@@ -1,0 +1,75 @@
+# Q.1) Python program that demonstrates the hill climbing algorithm to find the maximum of a mathematical function.
+
+def hill_climbing(start, func, step_size=0.1, max_iter=100):
+    current = start
+    for _ in range(max_iter):
+        next_move = current + step_size
+        if func(next_move) > func(current):
+            current = next_move
+        else:
+            break
+    return current
+
+# Example mathematical function: f(x) = -(x-3)^2 + 5 (a simple parabola with maximum at x=3)
+def func(x):
+    return -(x - 3)**2 + 5
+
+start_point = 0  # Starting point
+max_point = hill_climbing(start_point, func)
+print("Maximum found at:", max_point)
+
+# Q.2) Write a Python program to implement A* algorithm. Refer the following graph as an Input for the program. [Start vertex is A and Goal Vertex is G]
+
+import heapq
+
+def a_star(graph, start, goal, h):
+    open_list = []
+    heapq.heappush(open_list, (0 + h[start], 0, start, []))  # (f, g, current, path)
+    closed_list = set()
+
+    while open_list:
+        f, g, current, path = heapq.heappop(open_list)
+
+        if current in closed_list:
+            continue
+
+        closed_list.add(current)
+        path = path + [current]
+
+        if current == goal:
+            return path
+
+        for neighbor, cost in graph.get(current, []):
+            if neighbor not in closed_list:
+                heapq.heappush(open_list, (g + cost + h.get(neighbor, 0), g + cost, neighbor, path))
+
+    return None
+
+# Graph structure: adjacency list with (neighbor, cost)
+graph = {
+    'A': [('B', 1), ('C', 4)],
+    'B': [('D', 1), ('E', 3)],
+    'C': [('E', 1)],
+    'D': [('G', 5)],
+    'E': [('G', 2)],
+    'G': []
+}
+
+# Heuristic values for A* algorithm (estimated cost from each node to goal 'G')
+h = {
+    'A': 6,
+    'B': 4,
+    'C': 2,
+    'D': 1,
+    'E': 1,
+    'G': 0
+}
+
+start = 'A'
+goal = 'G'
+path = a_star(graph, start, goal, h)
+
+if path:
+    print("Path found:", " -> ".join(path))
+else:
+    print("No path found.")

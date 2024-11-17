@@ -1,52 +1,100 @@
-# Q.1) Write a python program to accept a number and check whether prime or not
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Text Hover Effect</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
 
-def is_prime(number):
-    if number <= 1:
-        return False
-    for i in range(2, int(number**0.5) + 1):
-        if number % i == 0:
-            return False
-    return True
+        .text {
+            font-family: 'Arial', sans-serif;
+            font-size: 80px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
 
-number = int(input("Enter a number: "))
-if is_prime(number):
-    print(f"{number} is a prime number.")
-else:
-    print(f"{number} is not a prime number.")
+        .text:hover {
+            color: #ff6347;
+            transform: perspective(500px) rotateX(15deg) rotateY(15deg) translateZ(50px);
+        }
+    </style>
+</head>
+<body>
+    <div class="text">
+        Hover Over Me!
+    </div>
+</body>
+</html>
 
-# Q.2) Write a Python program to solve 4 x 4 Queen problem
 
-def is_safe(board, row, col):
-    for i in range(col):
-        if board[row][i] == 1:
-            return False
-    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
-        if board[i][j] == 1:
-            return False
-    for i, j in zip(range(row, len(board), 1), range(col, -1, -1)):
-        if board[i][j] == 1:
-            return False
-    return True
 
-def solve(board, col):
-    if col >= len(board):
-        return True
-    for i in range(len(board)):
-        if is_safe(board, i, col):
-            board[i][col] = 1
-            if solve(board, col + 1):
-                return True
-            board[i][col] = 0
-    return False
 
-def print_board(board):
-    for row in board:
-        print(" ".join(["Q" if x else "." for x in row]))
+db.customers.insertMany([
+    { _id: 1, first_name: "Sam", last_name: "Johnson", accounts: [1, 2], branch: "Downtown", loan_accounts: [1] },
+    { _id: 2, first_name: "Sarah", last_name: "Williams", accounts: [3], branch: "Uptown", loan_accounts: [] },
+    { _id: 3, first_name: "Steve", last_name: "Davis", accounts: [4], branch: "Uptown", loan_accounts: [2] },
+    { _id: 4, first_name: "Samantha", last_name: "Clark", accounts: [5], branch: "Downtown", loan_accounts: [3] },
+    { _id: 5, first_name: "Robert", last_name: "Brown", accounts: [6], branch: "Downtown", loan_accounts: [] }
+]);
 
-board = [[0 for _ in range(4)] for _ in range(4)]
 
-if solve(board, 0):
-    print("Solution to the 4x4 Queen problem:")
-    print_board(board)
-else:
-    print("No solution exists.")
+db.accounts.insertMany([
+    { _id: 1, customer_id: 1, account_type: "Checking", balance: 5000, opened_on: "2019-05-20" },
+    { _id: 2, customer_id: 1, account_type: "Saving", balance: 10000, opened_on: "2020-01-01" },
+    { _id: 3, customer_id: 2, account_type: "Saving", balance: 8000, opened_on: "2020-02-15" },
+    { _id: 4, customer_id: 3, account_type: "Saving", balance: 12000, opened_on: "2018-07-10" },
+    { _id: 5, customer_id: 4, account_type: "Saving", balance: 20000, opened_on: "2020-01-01" },
+    { _id: 6, customer_id: 5, account_type: "Checking", balance: 15000, opened_on: "2017-11-05" }
+]);
+
+
+db.loan_accounts.insertMany([
+    { _id: 1, customer_id: 1, loan_type: "Home Loan", amount: 150000, branch: "Downtown", loan_status: "Active" },
+    { _id: 2, customer_id: 3, loan_type: "Car Loan", amount: 20000, branch: "Uptown", loan_status: "Paid" },
+    { _id: 3, customer_id: 4, loan_type: "Personal Loan", amount: 50000, branch: "Downtown", loan_status: "Active" }
+]);
+
+
+
+
+db.customers.find({ first_name: /^S/ }, { first_name: 1, last_name: 1 });
+
+
+db.customers.aggregate([
+    { $lookup: {
+        from: "accounts",
+        localField: "accounts",
+        foreignField: "_id",
+        as: "account_details"
+    }},
+    { $unwind: "$account_details" },
+    { $match: { "account_details.opened_on": "2020-01-01", "branch": "Downtown" } },
+    { $project: { first_name: 1, last_name: 1, "account_details.opened_on": 1 } }
+]);
+
+db.customers.aggregate([
+    { $lookup: {
+        from: "accounts",
+        localField: "accounts",
+        foreignField: "_id",
+        as: "account_details"
+    }},
+    { $unwind: "$account_details" },
+    { $match: { "account_details.account_type": "Saving" } },
+    { $project: { first_name: 1, last_name: 1 } }
+]);
+
+db.loan_accounts.aggregate([
+    { $match: { branch: "Downtown" } },
+    { $count: "total_loan_accounts" }
+]);

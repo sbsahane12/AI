@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Text Effects</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .text-container {
+            text-align: center;
+        }
+
+        .text-3d {
+            font-size: 60px;
+            font-weight: bold;
+            color: #094067;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+            letter-spacing: 5px;
+            word-wrap: break-word;
+            text-shadow:
+                3px 3px 5px rgba(0, 0, 0, 0.2),
+                -3px -3px 5px rgba(0, 0, 0, 0.2),
+                0px 10px 10px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .text-3d::after {
+            content: "3D Text Effects";
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #3da9fc;
+            font-size: 70px;
+            z-index: -1;
+            text-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .container {
+            width: 80%;
+            height: 50%;
+            word-wrap: break-word;
+            overflow: hidden;
+        }
+
+        .box {
+            display: inline-block;
+            padding: 15px;
+            margin-top: 20px;
+            background-color: #3da9fc;
+            color: #fff;
+            font-size: 20px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+
+        .box:hover {
+            transform: scale(1.1);
+        }
+
+        .overflow-box {
+            width: 200px;
+            height: 50px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            border: 1px solid #ccc;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="text-container">
+        <div class="text-3d">3D Text Effects Example</div>
+        <div class="container">
+            <div class="box">Hover on this box for scaling effect!</div>
+            <div class="overflow-box">
+                This is a long text that will overflow and be truncated.
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+// Insert data into the Cars collection
+db.cars.insertMany([
+  { "_id": 1, "name": "Honda City", "model": "Sedan", "price": 1000000 },
+  { "_id": 2, "name": "Skoda", "model": "SUV", "price": 1200000 },
+  { "_id": 3, "name": "Creta", "model": "SUV", "price": 1500000 },
+  { "_id": 4, "name": "Swift", "model": "Hatchback", "price": 800000 },
+  { "_id": 5, "name": "Ertiga", "model": "MPV", "price": 900000 }
+]);
+
+// Insert data into the Sections collection
+db.sections.insertMany([
+  { "_id": 1, "name": "Sedan Section", "car_model_id": 1 },
+  { "_id": 2, "name": "SUV Section", "car_model_id": 2 },
+  { "_id": 3, "name": "SUV Section", "car_model_id": 3 },
+  { "_id": 4, "name": "Hatchback Section", "car_model_id": 4 },
+  { "_id": 5, "name": "MPV Section", "car_model_id": 5 }
+]);
+
+// Insert data into the Sales Staff collection
+db.sales_staff.insertMany([
+  { "_id": 1, "name": "Mr. Narayan", "sections_handled": [1, 2] },
+  { "_id": 2, "name": "Ms. Meera", "sections_handled": [3, 4] },
+  { "_id": 3, "name": "Mr. Kumar", "sections_handled": [5] }
+]);
+
+// Insert data into the Customers collection
+db.customers.insertMany([
+  { "_id": 1, "name": "Alice", "enquiries": [1, 2], "purchases": [] },
+  { "_id": 2, "name": "Bob", "enquiries": [3], "purchases": [4] },
+  { "_id": 3, "name": "Charlie", "enquiries": [5], "purchases": [5] }
+]);
+
+// Insert data into the Enquiries collection
+db.enquiries.insertMany([
+  { "_id": 1, "customer_id": 1, "car_model_id": 1, "enquiry_date": "2024-11-01" },
+  { "_id": 2, "customer_id": 1, "car_model_id": 2, "enquiry_date": "2024-11-02" },
+  { "_id": 3, "customer_id": 2, "car_model_id": 3, "enquiry_date": "2024-11-03" },
+  { "_id": 4, "customer_id": 2, "car_model_id": 4, "enquiry_date": "2024-11-04" },
+  { "_id": 5, "customer_id": 3, "car_model_id": 5, "enquiry_date": "2024-11-05" }
+]);
+
+// Insert data into the Purchases collection
+db.purchases.insertMany([
+  { "_id": 1, "customer_id": 2, "car_model_id": 4, "purchase_date": "2024-11-06" },
+  { "_id": 2, "customer_id": 3, "car_model_id": 5, "purchase_date": "2024-11-07" }
+]);
+
+// Queries
+
+// Query 1: List the types of cars available in the showroom
+db.cars.distinct("model");
+
+// Query 2: List the sections handled by Mr. Narayan
+db.sales_staff.find({ "name": "Mr. Narayan" }, { "sections_handled": 1, "_id": 0 });
+
+// Query 3: List the names of customers who have done only enquiry but not made any purchase
+db.customers.find(
+  { "purchases": { $size: 0 } },
+  { "name": 1, "_id": 0 }
+);
+
+// Query 4: List the highly sold car model
+db.purchases.aggregate([
+  { $group: { _id: "$car_model_id", total_sales: { $sum: 1 } } },
+  { $sort: { total_sales: -1 } },
+  { $limit: 1 },
+  { $lookup: {
+    from: "cars",
+    localField: "_id",
+    foreignField: "_id",
+    as: "car_model"
+  }},
+  { $unwind: "$car_model" },
+  { $project: { "car_model.name": 1, "total_sales": 1, "_id": 0 } }
+]);

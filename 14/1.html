@@ -1,52 +1,158 @@
-# Q.1) Write a python program to sort the sentence in alphabetical order?
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Plan Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        header {
+            background-color: #094067;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+        input[type="text"], input[type="tel"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        button {
+            background-color: #3da9fc;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1em;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #094067;
+        }
+        button[type="reset"] {
+            background-color: #ff6f61;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Travel Plan Booking Form</h1>
+    </header>
 
-def sort_sentence(sentence):
-    words = sentence.split()
-    words.sort()
-    return " ".join(words)
+    <form action="/submit" method="POST">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" required>
 
-sentence = input("Enter a sentence: ")
-sorted_sentence = sort_sentence(sentence)
-print("Sorted sentence:", sorted_sentence)
+        <label for="address">Address</label>
+        <textarea id="address" name="address" rows="4" required></textarea>
 
-# Q.2) Write a Python program to simulate n-Queens problem.
+        <label for="contact">Contact No.</label>
+        <input type="tel" id="contact" name="contact" required>
 
-def is_safe(board, row, col, n):
-    for i in range(col):
-        if board[row][i] == 1:
-            return False
+        <label for="gender">Gender</label>
+        <select id="gender" name="gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+        </select>
 
-    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
-        if board[i][j] == 1:
-            return False
+        <label>Preferred Season</label>
+        <input type="checkbox" id="winter" name="preferred_season" value="Winter">
+        <label for="winter">Winter</label>
+        <input type="checkbox" id="summer" name="preferred_season" value="Summer">
+        <label for="summer">Summer</label>
+        <input type="checkbox" id="monsoon" name="preferred_season" value="Monsoon">
+        <label for="monsoon">Monsoon</label>
 
-    for i, j in zip(range(row, n, 1), range(col, -1, -1)):
-        if board[i][j] == 1:
-            return False
+        <label for="location">Location Type</label>
+        <select id="location" name="location" required>
+            <option value="beach">Beach</option>
+            <option value="mountain">Mountain</option>
+            <option value="city">City</option>
+            <option value="forest">Forest</option>
+        </select>
 
-    return True
+        <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
+    </form>
+</body>
+</html>
 
-def solve(board, col, n):
-    if col >= n:
-        return True
 
-    for i in range(n):
-        if is_safe(board, i, col, n):
-            board[i][col] = 1
-            if solve(board, col + 1, n):
-                return True
-            board[i][col] = 0
-    return False
+// 1. Insert documents into the "students" collection.
+db.students.insertMany([
+    { _id: 1, name: "John Doe", category: "OBC", scholarships: ["Scholarship A", "Scholarship B"], year: "2020-2021", income: 50000 },
+    { _id: 2, name: "Jane Smith", category: "General", scholarships: ["Scholarship C"], year: "2020-2021", income: 40000 },
+    { _id: 3, name: "Samuel Green", category: "OBC", scholarships: ["Scholarship B", "Scholarship D"], year: "2020-2021", income: 60000 },
+    { _id: 4, name: "Emily Brown", category: "SC", scholarships: ["Scholarship A"], year: "2020-2021", income: 35000 },
+    { _id: 5, name: "Chris Lee", category: "OBC", scholarships: ["Scholarship A", "Scholarship C"], year: "2020-2021", income: 55000 }
+]);
 
-def print_board(board):
-    for row in board:
-        print(" ".join(["Q" if x else "." for x in row]))
+// 2. Insert documents into the "scholarships" collection.
+db.scholarships.insertMany([
+    { _id: "Scholarship A", name: "Scholarship A", category: "OBC", incomeLimit: 60000 },
+    { _id: "Scholarship B", name: "Scholarship B", category: "OBC", incomeLimit: 65000 },
+    { _id: "Scholarship C", name: "Scholarship C", category: "General", incomeLimit: 50000 },
+    { _id: "Scholarship D", name: "Scholarship D", category: "OBC", incomeLimit: 70000 }
+]);
 
-n = int(input("Enter the value of N for the N x N Queen problem: "))
-board = [[0 for _ in range(n)] for _ in range(n)]
+// 3. Insert documents into the "recommendations" collection.
+db.recommendations.insertMany([
+    { _id: 1, studentId: 1, recommendedTo: [2, 3] },
+    { _id: 2, studentId: 3, recommendedTo: [5] }
+]);
 
-if solve(board, 0, n):
-    print(f"Solution to the {n} x {n} Queen problem:")
-    print_board(board)
-else:
-    print("No solution exists.")
+// Queries:
+
+// a. List the names of scholarships for OBC category.
+db.scholarships.find({ category: "OBC" }).forEach(function(doc) {
+    print(doc.name);
+});
+
+// b. Count the number of students who benefitted from "Scholarship A" in year 2020-2021.
+db.students.aggregate([
+    { $match: { year: "2020-2021", scholarships: { $in: ["Scholarship A"] } } },
+    { $count: "students_count" }
+]);
+
+// c. Update the income limit for "Scholarship A".
+db.scholarships.updateOne(
+    { name: "Scholarship A" },
+    { $set: { incomeLimit: 75000 } }
+);
+
+// d. List the most popular scholarship (with the most students).
+db.scholarships.aggregate([
+    { $lookup: { from: "students", localField: "name", foreignField: "scholarships", as: "students" } },
+    { $project: { name: 1, studentCount: { $size: "$students" } } },
+    { $sort: { studentCount: -1 } },
+    { $limit: 1 }
+]);
+
+// e. List students from class 'FY' and participated in 'E-Rangoli' Competition.
+db.students.find({ "scholarships": "E-Rangoli", "class": "FY" }).forEach(function(doc) {
+    print(doc.name);
+});

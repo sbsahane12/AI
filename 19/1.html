@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Progress</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+        }
+        #progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            height: 30px;
+            border-radius: 5px;
+            margin-top: 20px;
+            position: relative;
+        }
+        #progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: green;
+            border-radius: 5px;
+            transition: width 1s;
+        }
+        #start-btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #start-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Click to Start Download</h2>
+        <button id="start-btn" onclick="startDownload()">Start Download</button>
+
+        <div id="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+    </div>
+
+    <script>
+        function startDownload() {
+            let progressBar = document.getElementById("progress-bar");
+            let progress = 0;
+            let colorIndex = 0;
+            const colors = ['green', 'blue', 'orange', 'red'];
+            progressBar.style.width = progress + '%';
+
+
+            const interval = setInterval(function() {
+                if (progress < 100) {
+                    progress += 10;
+                    progressBar.style.width = progress + '%';
+
+
+                    if (Math.floor(progress / 10) % 3 === 0) {
+                        progressBar.style.backgroundColor = colors[colorIndex];
+                        colorIndex = (colorIndex + 1) % colors.length;
+                    }
+                } else {
+                    clearInterval(interval);
+                }
+            }, 1000);
+        }
+    </script>
+
+</body>
+</html>
+
+
+
+
+// Insert data into the Laptops collection
+db.laptops.insertMany([
+  {
+    "_id": 1,
+    "brand": "DELL",
+    "model": "Inspiron 15",
+    "price": 45000,
+    "characteristics": ["i5 processor", "8GB RAM", "1TB HDD"],
+    "rating": 4.5
+  },
+  {
+    "_id": 2,
+    "brand": "HP",
+    "model": "Pavilion X360",
+    "price": 55000,
+    "characteristics": ["i7 processor", "16GB RAM", "512GB SSD"],
+    "rating": 4.7
+  },
+  {
+    "_id": 3,
+    "brand": "Lenovo",
+    "model": "ThinkPad X1",
+    "price": 90000,
+    "characteristics": ["i9 processor", "32GB RAM", "1TB SSD"],
+    "rating": 4.9
+  }
+]);
+
+// Insert data into the Customers collection
+db.customers.insertMany([
+  {
+    "_id": 1,
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "purchases": [1, 3]  // References to laptops purchased
+  },
+  {
+    "_id": 2,
+    "name": "Jane Smith",
+    "email": "jane.smith@example.com",
+    "purchases": [2]
+  }
+]);
+
+// Insert data into the Purchases collection
+db.purchases.insertMany([
+  {
+    "_id": 1,
+    "customer_id": 1,
+    "laptop_id": 1,  // Reference to the laptop purchased
+    "purchase_date": "2023-01-26"
+  },
+  {
+    "_id": 2,
+    "customer_id": 2,
+    "laptop_id": 2,
+    "purchase_date": "2023-02-10"
+  }
+]);
+
+// Insert data into the Reviews collection
+db.reviews.insertMany([
+  {
+    "_id": 1,
+    "customer_id": 1,
+    "laptop_id": 1,
+    "rating": 5,
+    "review_text": "Excellent performance and battery life!"
+  },
+  {
+    "_id": 2,
+    "customer_id": 2,
+    "laptop_id": 2,
+    "rating": 4,
+    "review_text": "Good overall, but the display could be better."
+  }
+]);
+
+// Query 1: List characteristics of a specific laptop
+db.laptops.find({ "brand": "DELL", "model": "Inspiron 15" }, { "characteristics": 1 });
+
+// Query 2: List names of customers who bought a "DELL" laptop
+db.customers.aggregate([
+  { $lookup: { from: "purchases", localField: "_id", foreignField: "customer_id", as: "purchases" } },
+  { $unwind: "$purchases" },
+  { $lookup: { from: "laptops", localField: "purchases.laptop_id", foreignField: "_id", as: "laptop_details" } },
+  { $match: { "laptop_details.brand": "DELL" } },
+  { $project: { "name": 1, "_id": 0 } }
+]);
+
+// Query 3: List customers who purchased a device on "26/01/2023"
+db.purchases.aggregate([
+  { $match: { "purchase_date": "2023-01-26" } },
+  { $lookup: { from: "customers", localField: "customer_id", foreignField: "_id", as: "customer_details" } },
+  { $project: { "customer_details.name": 1, "_id": 0 } }
+]);
+
+// Query 4: List the most recommended laptop (highest average rating)
+db.reviews.aggregate([
+  { $group: { _id: "$laptop_id", average_rating: { $avg: "$rating" } } },
+  { $sort: { average_rating: -1 } },
+  { $limit: 1 },
+  { $lookup: { from: "laptops", localField: "_id", foreignField: "_id", as: "laptop_details" } },
+  { $project: { "laptop_details.model": 1, "average_rating": 1, "_id": 0 } }
+]);

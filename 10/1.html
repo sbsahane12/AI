@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transition Effects Example</title>
+    <style>
+        .box {
+            width: 200px;
+            height: 200px;
+            background-color: #4CAF50;
+            margin: 50px;
+            transition: all 0.5s ease; /* transition properties */
+        }
+
+        .box:hover {
+            background-color: #f44336; /* background color on hover */
+            transform: scale(1.1); /* zoom effect */
+            border-radius: 50%; /* rounded corners */
+        }
+
+        .box-delayed {
+            width: 200px;
+            height: 200px;
+            background-color: #2196F3;
+            margin: 50px;
+            transition: all 1s ease 1s; /* transition delay */
+        }
+
+        .box-delayed:hover {
+            background-color: #ff5722; /* background color on hover */
+            transform: rotate(45deg); /* rotation effect */
+        }
+    </style>
+</head>
+<body>
+    <h2>Transition Properties Example</h2>
+    <div class="box"></div>
+    <div class="box-delayed"></div>
+</body>
+</html>
+
+
+db.brands.insertMany([
+    { _id: 1, name: "BrandA", rating: 4.5 },
+    { _id: 2, name: "BrandB", rating: 4.0 },
+    { _id: 3, name: "BrandC", rating: 4.7 },
+    { _id: 4, name: "BrandD", rating: 3.8 },
+    { _id: 5, name: "BrandE", rating: 4.2 }
+]);
+
+db.products.insertMany([
+    { _id: 1, name: "Product1", brand: "BrandA", warranty_period: "1 year", price: 500, rating: 4.5 },
+    { _id: 2, name: "Product2", brand: "BrandB", warranty_period: "2 years", price: 300, rating: 4.2 },
+    { _id: 3, name: "Product3", brand: "BrandC", warranty_period: "1 year", price: 700, rating: 4.7 },
+    { _id: 4, name: "Product4", brand: "BrandD", warranty_period: "3 years", price: 450, rating: 3.8 },
+    { _id: 5, name: "Product5", brand: "BrandE", warranty_period: "2 years", price: 600, rating: 4.2 }
+]);
+
+db.customers.insertMany([
+    { _id: 1, name: "John Doe", city: "Pune", purchase_date: "2023-08-15", billamt: 30000 },
+    { _id: 2, name: "Jane Smith", city: "Mumbai", purchase_date: "2023-08-15", billamt: 60000 },
+    { _id: 3, name: "Alice Johnson", city: "Bangalore", purchase_date: "2023-08-14", billamt: 50000 },
+    { _id: 4, name: "Robert Brown", city: "Pune", purchase_date: "2023-08-16", billamt: 25000 },
+    { _id: 5, name: "Emily White", city: "Pune", purchase_date: "2023-08-17", billamt: 75000 }
+]);
+
+db.products.find({ warranty_period: "1 year" });
+
+db.customers.find({ purchase_date: "2023-08-15" });
+
+db.products.aggregate([
+    {
+        $lookup: {
+            from: "brands",
+            localField: "brand",
+            foreignField: "name",
+            as: "brand_info"
+        }
+    },
+    { $unwind: "$brand_info" },
+    { $sort: { rating: -1 } },
+    { $limit: 1 },
+    { $project: { name: 1, "brand_info.name": 1, rating: 1 } }
+]);
+
+db.customers.find({ city: "Pune", billamt: { $gt: 50000 } });

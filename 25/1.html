@@ -1,48 +1,250 @@
-# Q.1) Write a program to find and display perfect numbers from list
 
-def is_perfect_number(n):
-    divisors_sum = sum(i for i in range(1, n) if n % i == 0)
-    return divisors_sum == n
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <style>
+        /* Body Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            padding: 20px;
+        }
 
-def perfect_numbers_from_list(numbers):
-    perfect_numbers = [num for num in numbers if is_perfect_number(num)]
-    return perfect_numbers
+        /* Container for the form */
+        .form-container {
+            background-color: #ffffff;
+            padding: 30px;
+            max-width: 600px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-numbers = [6, 28, 12, 496, 35, 15]
-perfect_numbers = perfect_numbers_from_list(numbers)
-print("Perfect numbers in the list:", perfect_numbers)
+        /* Heading Styling */
+        h1 {
+            text-align: center;
+            color: #3da9fc;
+        }
 
-# Q.2) Write a Python program to solve 8-Queen puzzle problem
+        /* Form Input Styling */
+        .input-group {
+            margin-bottom: 20px;
+        }
 
-def print_board(board):
-    for row in board:
-        print(' '.join(['Q' if x else '.' for x in row]))
-    print()
+        label {
+            font-size: 18px;
+            color: #094067;
+            display: block;
+            margin-bottom: 8px;
+        }
 
-def is_safe(board, row, col):
-    for i in range(row):
-        if board[i][col] == 1:
-            return False
-    for i, j in zip(range(row-1, -1, -1), range(col-1, -1, -1)):
-        if board[i][j] == 1:
-            return False
-    for i, j in zip(range(row-1, -1, -1), range(col+1, len(board))):
-        if board[i][j] == 1:
-            return False
-    return True
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
 
-def solve_8_queen(board, row):
-    if row == len(board):
-        print_board(board)
-        return True
-    for col in range(len(board)):
-        if is_safe(board, row, col):
-            board[row][col] = 1
-            if solve_8_queen(board, row + 1):
-                return True
-            board[row][col] = 0  # Backtrack
-    return False
+        input[type="radio"], input[type="checkbox"] {
+            width: auto;
+        }
 
-board = [[0 for _ in range(8)] for _ in range(8)]
-if not solve_8_queen(board, 0):
-    print("No solution exists.")
+        input[type="submit"] {
+            background-color: #3da9fc;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2f8ccf;
+        }
+
+        /* Add some space around form inputs */
+        .input-group input, .input-group select, .input-group textarea {
+            margin-top: 8px;
+        }
+
+        /* Styling for radio buttons and checkboxes */
+        .input-group input[type="radio"],
+        .input-group input[type="checkbox"] {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h1>Registration Form</h1>
+        <form action="#" method="POST">
+
+            <!-- Name Field -->
+            <div class="input-group">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+            </div>
+
+            <!-- Address Field -->
+            <div class="input-group">
+                <label for="address">Address:</label>
+                <textarea id="address" name="address" rows="4" placeholder="Enter your address" required></textarea>
+            </div>
+
+            <!-- Password Field -->
+            <div class="input-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+
+            <!-- Select Languages -->
+            <div class="input-group">
+                <label for="languages">Select Languages:</label>
+                <select id="languages" name="languages[]" multiple required>
+                    <option value="english">English</option>
+                    <option value="french">French</option>
+                    <option value="spanish">Spanish</option>
+                    <option value="german">German</option>
+                    <option value="chinese">Chinese</option>
+                </select>
+            </div>
+
+            <!-- Sex (Gender) -->
+            <div class="input-group">
+                <label>Sex:</label>
+                <input type="radio" id="male" name="sex" value="male">
+                <label for="male">Male</label>
+                <input type="radio" id="female" name="sex" value="female">
+                <label for="female">Female</label>
+            </div>
+
+            <!-- Checkbox for Terms and Conditions -->
+            <div class="input-group">
+                <input type="checkbox" id="terms" name="terms" value="agree" required>
+                <label for="terms">I agree to the terms and conditions</label>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="input-group">
+                <input type="submit" value="Submit">
+            </div>
+
+        </form>
+    </div>
+
+</body>
+</html>
+
+
+
+db.departments.insertMany([
+  { "_id": 1, "name": "Physics", "location": "Building A", "faculty_count": 30 },
+  { "_id": 2, "name": "Geography", "location": "Building B", "faculty_count": 25 },
+  { "_id": 3, "name": "Computer Science", "location": "Building C", "faculty_count": 40 },
+  { "_id": 4, "name": "Mathematics", "location": "Building D", "faculty_count": 35 }
+]);
+
+// Step 2: Insert Courses
+db.courses.insertMany([
+  { "_id": 1, "name": "Quantum Mechanics", "course_code": "PH101", "credits": 4 },
+  { "_id": 2, "name": "Geographic Information Systems", "course_code": "GE101", "credits": 3 },
+  { "_id": 3, "name": "Data Structures", "course_code": "CS101", "credits": 4 },
+  { "_id": 4, "name": "Calculus", "course_code": "MA101", "credits": 3 },
+  { "_id": 5, "name": "Software Engineering", "course_code": "CS102", "credits": 4 }
+]);
+
+// Step 3: Insert Course-Department Relationships
+db.course_department.insertMany([
+  { "course_id": 1, "department_id": 1 }, // Quantum Mechanics -> Physics
+  { "course_id": 2, "department_id": 2 }, // GIS -> Geography
+  { "course_id": 3, "department_id": 3 }, // Data Structures -> Computer Science
+  { "course_id": 4, "department_id": 4 }, // Calculus -> Mathematics
+  { "course_id": 3, "department_id": 2 }, // Data Structures -> Geography
+  { "course_id": 5, "department_id": 3 }, // Software Engineering -> Computer Science
+  { "course_id": 4, "department_id": 3 }  // Calculus -> Computer Science
+]);
+
+// Step 4: Insert Recommendations
+db.recommendations.insertMany([
+  { "course_id": 1, "rating": 5, "comments": "A must-take course for Physics majors." },
+  { "course_id": 2, "rating": 4, "comments": "Very useful for Geographers." },
+  { "course_id": 3, "rating": 5, "comments": "Best course for Computer Science students." },
+  { "course_id": 5, "rating": 4, "comments": "Highly recommended for CS students." }
+]);
+
+// Step 5: Queries
+
+// a. List the details of all the departments in the university
+db.departments.find({}, { "_id": 0, "name": 1, "location": 1, "faculty_count": 1 });
+
+// b. List the names of the courses provided by the Physics department
+db.course_department.aggregate([
+  { $match: { "department_id": 1 } }, // Physics department
+  { $lookup: {
+    from: "courses",
+    localField: "course_id",
+    foreignField: "_id",
+    as: "course_details"
+  }},
+  { $unwind: "$course_details" },
+  { $project: { "course_details.name": 1, "_id": 0 } }
+]);
+
+// c. List the most recommended course in the Geography department
+db.course_department.aggregate([
+  { $match: { "department_id": 2 } }, // Geography department
+  { $lookup: {
+    from: "courses",
+    localField: "course_id",
+    foreignField: "_id",
+    as: "course_details"
+  }},
+  { $unwind: "$course_details" },
+  { $lookup: {
+    from: "recommendations",
+    localField: "course_id",
+    foreignField: "course_id",
+    as: "recommendations"
+  }},
+  { $unwind: "$recommendations" },
+  { $group: {
+    _id: "$course_id",
+    total_recommendations: { $sum: 1 }
+  }},
+  { $sort: { total_recommendations: -1 } },
+  { $limit: 1 },
+  { $lookup: {
+    from: "courses",
+    localField: "_id",
+    foreignField: "_id",
+    as: "course_details"
+  }},
+  { $unwind: "$course_details" },
+  { $project: { "course_details.name": 1, "total_recommendations": 1, "_id": 0 } }
+]);
+
+// d. List the names of common courses across Mathematics and Computer Science departments
+db.course_department.aggregate([
+  { $match: { "department_id": { $in: [4, 3] } } }, // Mathematics and Computer Science departments
+  { $group: {
+    _id: "$course_id",
+    departments: { $addToSet: "$department_id" }
+  }},
+  { $match: { "departments": { $size: 2 } } }, // Common courses
+  { $lookup: {
+    from: "courses",
+    localField: "_id",
+    foreignField: "_id",
+    as: "course_details"
+  }},
+  { $unwind: "$course_details" },
+  { $project: { "course_details.name": 1, "_id": 0 } }
+]);

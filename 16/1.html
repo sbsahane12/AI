@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2 class="text-center">Contact Us</h2>
+        <form>
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number" required>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea class="form-control" id="message" rows="4" placeholder="Enter your message" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS, Popper.js, jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+
+
+
+// 1. Customers Collection
+db.customers.insertMany([
+    { _id: 1, name: "Sam", phone: "1234567890", email: "sam@example.com" },
+    { _id: 2, name: "Sita", phone: "0987654321", email: "sita@example.com" },
+    { _id: 3, name: "Ravi", phone: "1122334455", email: "ravi@example.com" }
+]);
+
+// 2. Restaurants Collection
+db.restaurants.insertMany([
+    { _id: 1, name: "Restaurant A", location: "City Center", rating: 4.5, food_industry: "Zomato" },
+    { _id: 2, name: "Restaurant B", location: "North Zone", rating: 3.8, food_industry: "Swiggy" },
+    { _id: 3, name: "Restaurant C", location: "South Zone", rating: 4.2, food_industry: "Zomato" }
+]);
+
+// 3. Food Industries Collection (Zomato, Swiggy)
+db.foodIndustries.insertMany([
+    { _id: 1, name: "Zomato", restaurants: [1, 3] },
+    { _id: 2, name: "Swiggy", restaurants: [2] }
+]);
+
+// 4. Orders Collection
+db.orders.insertMany([
+    { _id: 1, customer_id: 1, restaurant_id: 1, order_date: new Date("2023-01-01"), offer: "10% off" },
+    { _id: 2, customer_id: 2, restaurant_id: 2, order_date: new Date("2023-01-01"), offer: "5% off" },
+    { _id: 3, customer_id: 3, restaurant_id: 1, order_date: new Date("2023-01-02"), offer: "15% off" }
+]);
+
+// 5. Ratings Collection
+db.ratings.insertMany([
+    { customer_id: 1, restaurant_id: 1, rating: 5, comment: "Excellent food!" },
+    { customer_id: 2, restaurant_id: 2, rating: 4, comment: "Good service!" }
+]);
+
+// 6. Recommendations Collection
+db.recommendations.insertMany([
+    { customer_id: 1, recommended_to: [2, 3], restaurant_id: 1 },
+    { customer_id: 2, recommended_to: [1], restaurant_id: 2 }
+]);
+
+
+db.orders.countDocuments({ order_date: new Date("2023-01-01") });
+
+db.orders.aggregate([
+    { $lookup: {
+        from: "customers",
+        localField: "customer_id",
+        foreignField: "_id",
+        as: "customer_details"
+    }},
+    { $lookup: {
+        from: "restaurants",
+        localField: "restaurant_id",
+        foreignField: "_id",
+        as: "restaurant_details"
+    }},
+    { $match: { "restaurant_details.food_industry": "Swiggy" }},
+    { $unwind: "$customer_details" },
+    { $match: { "customer_details.name": /^S/ }},
+    { $project: { "customer_details.name": 1 }}
+]);
+
+db.restaurants.find({ rating: { $gte: 4 } }).forEach(function(restaurant) {
+    print(restaurant.name);
+});
+
+db.recommendations.aggregate([
+    { $lookup: {
+        from: "restaurants",
+        localField: "restaurant_id",
+        foreignField: "_id",
+        as: "restaurant_details"
+    }},
+    { $match: { "restaurant_details.location": "City Center" }},
+    { $group: { _id: "$restaurant_id", recommendation_count: { $sum: 1 } }},
+    { $sort: { recommendation_count: -1 }},
+    { $limit: 1 },
+    { $lookup: {
+        from: "restaurants",
+        localField: "_id",
+        foreignField: "_id",
+        as: "top_restaurant"
+    }},
+    { $project: { "top_restaurant.name": 1 }}
+]);

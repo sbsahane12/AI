@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Registration Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 50%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #094067;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 1.2em;
+            color: #5f6c7b;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+
+        button {
+            background-color: #3da9fc;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 48%;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #094067;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .form-actions button {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Customer Registration - Departmental Store</h2>
+        <form action="#" method="post">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required />
+            </div>
+
+            <div class="form-group">
+                <label for="contact">Contact No.</label>
+                <input type="tel" id="contact" name="contact" pattern="[0-9]{10}" required />
+            </div>
+
+            <div class="form-group">
+                <label>Gender</label><br />
+                <input type="radio" id="male" name="gender" value="Male" required />
+                <label for="male">Male</label>
+                <input type="radio" id="female" name="gender" value="Female" required />
+                <label for="female">Female</label>
+                <input type="radio" id="other" name="gender" value="Other" required />
+                <label for="other">Other</label>
+            </div>
+
+            <div class="form-group">
+                <label for="preferred_days">Preferred Days for Purchasing</label><br />
+                <input type="checkbox" id="monday" name="preferred_days" value="Monday" />
+                <label for="monday">Monday</label><br />
+                <input type="checkbox" id="wednesday" name="preferred_days" value="Wednesday" />
+                <label for="wednesday">Wednesday</label><br />
+                <input type="checkbox" id="friday" name="preferred_days" value="Friday" />
+                <label for="friday">Friday</label><br />
+                <input type="checkbox" id="weekend" name="preferred_days" value="Weekend" />
+                <label for="weekend">Weekend</label>
+            </div>
+
+            <div class="form-group">
+                <label for="favorite_item">Favorite Item</label>
+                <select id="favorite_item" name="favorite_item" required>
+                    <option value="">Select an Item</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Clothing">Clothing</option>
+                    <option value="Groceries">Groceries</option>
+                    <option value="Furniture">Furniture</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="suggestions">Suggestions</label>
+                <textarea id="suggestions" name="suggestions" rows="4" placeholder="Enter your suggestions..."></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit">Submit</button>
+                <button type="reset">Reset</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+
+
+// Insert sample documents into collections
+
+// Actors Collection
+db.actors.insertMany([
+    { _id: 1, name: "Akshay Kumar", roles: ["Lead"] },
+    { _id: 2, name: "Salman Khan", roles: ["Supporting"] },
+    { _id: 3, name: "Amitabh Bachchan", roles: ["Lead"] },
+    { _id: 4, name: "Deepika Padukone", roles: ["Lead"] },
+    { _id: 5, name: "Katrina Kaif", roles: ["Supporting"] }
+]);
+
+// Producers Collection
+db.producers.insertMany([
+    { _id: 1, name: "Karan Johar", movies_produced: ["Movie A", "Movie B"] },
+    { _id: 2, name: "Aditya Chopra", movies_produced: ["Movie C", "Movie D"] },
+    { _id: 3, name: "Ekta Kapoor", movies_produced: ["Movie E", "Movie B"] },
+    { _id: 4, name: "Sanjay Leela Bhansali", movies_produced: ["Movie A", "Movie D"] },
+    { _id: 5, name: "Rajkumar Hirani", movies_produced: ["Movie E"] }
+]);
+
+// Movies Collection
+db.movies.insertMany([
+    { _id: 1, name: "Movie A", budget: 500000000, actors: [1, 2], producers: [1, 4] },
+    { _id: 2, name: "Movie B", budget: 300000000, actors: [3, 4], producers: [1, 3] },
+    { _id: 3, name: "Movie C", budget: 400000000, actors: [2, 5], producers: [2] },
+    { _id: 4, name: "Movie D", budget: 600000000, actors: [1, 5], producers: [4, 2] },
+    { _id: 5, name: "Movie E", budget: 350000000, actors: [3, 5], producers: [3, 5] }
+]);
+
+// Queries for online movie information system
+
+// a. List the names of movies with the highest budget
+db.movies.find({ budget: { $eq: 600000000 } }).project({ name: 1, _id: 0 });
+
+// b. Display the details of producer who have produced more than one movie in a year
+db.producers.find({ "movies_produced": { $size: { $gt: 1 } } });
+
+// c. List the names of actors who have acted in at least one movie, in which ‘Akshay’ has acted
+db.movies.aggregate([
+    { $match: { actors: 1 } },
+    { $unwind: "$actors" },
+    { $lookup: { from: "actors", localField: "actors", foreignField: "_id", as: "actorDetails" } },
+    { $project: { "actorDetails.name": 1, _id: 0 } }
+]);
+
+// d. List the names of movies, produced by more than one producer
+db.movies.find({ "producers": { $size: { $gt: 1 } } }).project({ name: 1, _id: 0 });

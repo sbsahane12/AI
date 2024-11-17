@@ -1,66 +1,336 @@
-# Q.1) Write a python program to remove punctuations from the given string
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Form</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Student Registration Form</h2>
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="name">Full Name <span class="compulsory">*</span></label>
+                <input type="text" id="name" name="name" required>
+                <div class="message" id="nameMessage"></div>
+            </div>
 
-import string
+            <div class="form-group">
+                <label for="email">Email Address <span class="compulsory">*</span></label>
+                <input type="email" id="email" name="email" required>
+                <div class="message" id="emailMessage"></div>
+            </div>
 
-def remove_punctuations(input_string):
-    return ''.join(char for char in input_string if char not in string.punctuation)
+            <div class="form-group">
+                <label for="phone">Phone Number <span class="compulsory">*</span></label>
+                <input type="tel" id="phone" name="phone" required>
+                <div class="message" id="phoneMessage"></div>
+            </div>
 
-input_string = input("Enter a string: ")
-cleaned_string = remove_punctuations(input_string)
-print("String after removing punctuations:", cleaned_string)
+            <div class="form-group">
+                <label for="address">Address</label>
+                <textarea id="address" name="address"></textarea>
+            </div>
 
-# Q.2) Write a Python program to implement Heuristic search algorithm
+            <button type="submit" class="submit-btn">Register</button>
+        </form>
+    </div>
 
-import heapq
+    <script src="script.js"></script>
+</body>
+</html>
 
-def heuristic_search(graph, start, goal, h):
-    open_list = []
-    heapq.heappush(open_list, (h[start], start, []))  # (f, current, path)
-    closed_list = set()
 
-    while open_list:
-        f, current, path = heapq.heappop(open_list)
-
-        if current in closed_list:
-            continue
-
-        closed_list.add(current)
-        path = path + [current]
-
-        if current == goal:
-            return path
-
-        for neighbor, cost in graph.get(current, []):
-            if neighbor not in closed_list:
-                heapq.heappush(open_list, (f + cost + h.get(neighbor, 0), neighbor, path))
-
-    return None
-
-# Graph structure: adjacency list with (neighbor, cost)
-graph = {
-    'A': [('B', 1), ('C', 4)],
-    'B': [('D', 1), ('E', 3)],
-    'C': [('E', 1)],
-    'D': [('G', 5)],
-    'E': [('G', 2)],
-    'G': []
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f4f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
 
-# Heuristic values for heuristic search algorithm (estimated cost from each node to goal 'G')
-h = {
-    'A': 6,
-    'B': 4,
-    'C': 2,
-    'D': 1,
-    'E': 1,
-    'G': 0
+.form-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
 }
 
-start = 'A'
-goal = 'G'
-path = heuristic_search(graph, start, goal, h)
+h2 {
+    text-align: center;
+    color: #333;
+}
 
-if path:
-    print("Path found:", " -> ".join(path))
-else:
-    print("No path found.")
+/* Form Group Styling */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    font-size: 1.1em;
+    color: #094067;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Highlighting compulsory fields */
+.compulsory {
+    color: #ef4565;
+}
+
+/* Styling for the message under input fields */
+.message {
+    color: #ef4565;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+/* Submit button */
+.submit-btn {
+    background-color: #3da9fc;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1.1em;
+}
+
+.submit-btn:hover {
+    background-color: #338fd7;
+}
+
+
+document.getElementById('registrationForm').addEventListener('submit', function(event) {
+    let valid = true;
+
+    // Clear previous messages
+    document.getElementById('nameMessage').innerText = '';
+    document.getElementById('emailMessage').innerText = '';
+    document.getElementById('phoneMessage').innerText = '';
+
+    // Name validation
+    let name = document.getElementById('name').value;
+    if (name === '') {
+        document.getElementById('nameMessage').innerText = 'Name is required';
+        valid = false;
+    }
+
+    // Email validation
+    let email = document.getElementById('email').value;
+    if (email === '') {
+        document.getElementById('emailMessage').innerText = 'Email is required';
+        valid = false;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+        document.getElementById('emailMessage').innerText = 'Invalid email format';
+        valid = false;
+    }
+
+    // Phone validation
+    let phone = document.getElementById('phone').value;
+    if (phone === '') {
+        document.getElementById('phoneMessage').innerText = 'Phone number is required';
+        valid = false;
+    } else if (!/^\d{10}$/.test(phone)) {
+        document.getElementById('phoneMessage').innerText = 'Phone number must be 10 digits';
+        valid = false;
+    }
+
+    if (!valid) {
+        event.preventDefault();
+    }
+});
+
+// Insert data into the Plants collection
+db.plants.insertMany([
+  {
+    "_id": 1,
+    "name": "Rose",
+    "type": "Flowering",
+    "category": "Flower",
+    "price": 150,
+    "stock_qty": 500
+  },
+  {
+    "_id": 2,
+    "name": "Tulip",
+    "type": "Flowering",
+    "category": "Flower",
+    "price": 200,
+    "stock_qty": 300
+  },
+  {
+    "_id": 3,
+    "name": "Creeper",
+    "type": "Non-Flowering",
+    "category": "Vine",
+    "price": 120,
+    "stock_qty": 1000
+  },
+  {
+    "_id": 4,
+    "name": "Cactus",
+    "type": "Non-Flowering",
+    "category": "Succulent",
+    "price": 50,
+    "stock_qty": 150
+  }
+]);
+
+// Insert data into the Fertilizers collection
+db.fertilizers.insertMany([
+  {
+    "_id": 1,
+    "name": "Organic Fertilizer",
+    "type": "Organic",
+    "price": 250
+  },
+  {
+    "_id": 2,
+    "name": "Chemical Fertilizer",
+    "type": "Chemical",
+    "price": 100
+  }
+]);
+
+// Insert data into the Products collection
+db.products.insertMany([
+  {
+    "_id": 1,
+    "name": "Watering Can",
+    "type": "Tool",
+    "price": 150
+  },
+  {
+    "_id": 2,
+    "name": "Gardening Gloves",
+    "type": "Tool",
+    "price": 80
+  }
+]);
+
+// Insert data into the Customers collection
+db.customers.insertMany([
+  {
+    "_id": 1,
+    "name": "Alice Green",
+    "email": "alice.green@example.com",
+    "purchases": [1, 3]  // Purchased plants
+  },
+  {
+    "_id": 2,
+    "name": "Bob Brown",
+    "email": "bob.brown@example.com",
+    "purchases": [2, 4]
+  }
+]);
+
+// Insert data into the Purchases collection
+db.purchases.insertMany([
+  {
+    "_id": 1,
+    "customer_id": 1,
+    "plant_id": 1,  // Purchased plant ID
+    "purchase_date": "2023-11-01"
+  },
+  {
+    "_id": 2,
+    "customer_id": 2,
+    "plant_id": 2,
+    "purchase_date": "2023-11-02"
+  }
+]);
+
+// Insert data into the Reviews collection
+db.reviews.insertMany([
+  {
+    "_id": 1,
+    "customer_id": 1,
+    "plant_id": 1,
+    "rating": 5,
+    "review_text": "Beautiful and vibrant flowers!"
+  },
+  {
+    "_id": 2,
+    "customer_id": 2,
+    "plant_id": 2,
+    "rating": 4,
+    "review_text": "Good quality but a bit expensive."
+  }
+]);
+
+// Insert data into the Suppliers collection
+db.suppliers.insertMany([
+  {
+    "_id": 1,
+    "name": "Garden Co.",
+    "supplies": ["Creeper", "Tulip"]
+  },
+  {
+    "_id": 2,
+    "name": "Flora Ltd.",
+    "supplies": ["Rose", "Cactus"]
+  }
+]);
+
+// Insert data into the Recommendations collection
+db.recommendations.insertMany([
+  {
+    "_id": 1,
+    "customer_id": 1,
+    "recommended_plants": ["Rose", "Tulip"]
+  },
+  {
+    "_id": 2,
+    "customer_id": 2,
+    "recommended_plants": ["Creeper", "Cactus"]
+  }
+]);
+
+
+// Queries
+
+// Query 1: List the types of plants from your graph model
+db.plants.distinct("type");
+
+// Query 2: List the popular flowering plants
+db.plants.find({ "type": "Flowering" });
+
+// Query 3: List the names of plants sold where qty > 500 in the last 2 days
+// Assuming the `purchase_date` is stored in a date format
+var twoDaysAgo = new Date();
+twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+
+db.purchases.aggregate([
+  { $match: { "purchase_date": { $gte: twoDaysAgo } } },
+  { $lookup: { from: "plants", localField: "plant_id", foreignField: "_id", as: "plant_details" } },
+  { $unwind: "$plant_details" },
+  { $match: { "plant_details.stock_qty": { $gt: 500 } } },
+  { $project: { "plant_details.name": 1, "_id": 0 } }
+]);
+
+// Query 4: List the names of suppliers in decreasing order who supply "Creepers"
+db.suppliers.aggregate([
+  { $match: { "supplies": "Creeper" } },
+  { $sort: { "name": -1 } },
+  { $project: { "name": 1, "_id": 0 } }
+]);

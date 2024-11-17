@@ -1,76 +1,200 @@
-# Q.1) Write a python program to implement list operations (any 5)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar Input Types</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
 
-def list_operations():
-    my_list = [1, 2, 3, 4, 5]
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-    my_list.append(6)
-    print("List after append:", my_list)
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-    my_list.insert(2, 10)
-    print("List after insert:", my_list)
+        .input-group {
+            margin-bottom: 20px;
+        }
 
-    my_list.remove(4)
-    print("List after remove:", my_list)
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
 
-    popped_element = my_list.pop()
-    print("List after pop:", my_list)
-    print("Popped element:", popped_element)
+        input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
 
-    my_list.sort()
-    print("List after sort:", my_list)
+        input[type="submit"] {
+            background-color: #3da9fc;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
 
-list_operations()
+        input[type="submit"]:hover {
+            background-color: #2f8ccf;
+        }
+    </style>
+</head>
+<body>
 
-# Q.2) Write a Python program to implement heuristic search algorithm
+    <div class="container">
+        <h1>Calendar Input Form</h1>
 
-import heapq
+        <form action="#" method="POST">
 
-def heuristic_search(graph, start, goal, h):
-    open_list = []
-    heapq.heappush(open_list, (h[start], start, []))  # (f, current, path)
-    closed_list = set()
+            <!-- Date Input -->
+            <div class="input-group">
+                <label for="date">Select Date:</label>
+                <input type="date" id="date" name="date" required>
+            </div>
 
-    while open_list:
-        f, current, path = heapq.heappop(open_list)
+            <!-- Datetime-local Input -->
+            <div class="input-group">
+                <label for="datetime">Select Date and Time:</label>
+                <input type="datetime-local" id="datetime" name="datetime" required>
+            </div>
 
-        if current in closed_list:
-            continue
+            <!-- Week Input -->
+            <div class="input-group">
+                <label for="week">Select Week:</label>
+                <input type="week" id="week" name="week" required>
+            </div>
 
-        closed_list.add(current)
-        path = path + [current]
+            <!-- Time Input -->
+            <div class="input-group">
+                <label for="time">Select Time:</label>
+                <input type="time" id="time" name="time" required>
+            </div>
 
-        if current == goal:
-            return path
+            <!-- Month Input -->
+            <div class="input-group">
+                <label for="month">Select Month:</label>
+                <input type="month" id="month" name="month" required>
+            </div>
 
-        for neighbor, cost in graph.get(current, []):
-            if neighbor not in closed_list:
-                heapq.heappush(open_list, (f + cost + h.get(neighbor, 0), neighbor, path))
+            <!-- Submit Button -->
+            <input type="submit" value="Submit">
 
-    return None
+        </form>
+    </div>
 
-graph = {
-    'A': [('B', 1), ('C', 4)],
-    'B': [('D', 1), ('E', 3)],
-    'C': [('E', 1)],
-    'D': [('G', 5)],
-    'E': [('G', 2)],
-    'G': []
-}
+</body>
+</html>
 
-h = {
-    'A': 6,
-    'B': 4,
-    'C': 2,
-    'D': 1,
-    'E': 1,
-    'G': 0
-}
 
-start = 'A'
-goal = 'G'
-path = heuristic_search(graph, start, goal, h)
 
-if path:
-    print("Path found:", " -> ".join(path))
-else:
-    print("No path found.")
+// Insert Book Types
+db.bookTypes.insertMany([
+  { "_id": 1, "type": "text", "description": "Textbook", "popularity": 8 },
+  { "_id": 2, "type": "reference", "description": "Reference Book", "popularity": 6 },
+  { "_id": 3, "type": "bibliography", "description": "Bibliography", "popularity": 7 }
+]);
+
+// Insert Books
+db.books.insertMany([
+  { "_id": 1, "title": "Mathematics for Engineers", "book_type_id": 1 },
+  { "_id": 2, "title": "Physics Concepts", "book_type_id": 1 },
+  { "_id": 3, "title": "Advanced Chemistry", "book_type_id": 2 },
+  { "_id": 4, "title": "Literature Guide", "book_type_id": 3 }
+]);
+
+// Insert Students
+db.students.insertMany([
+  { "_id": 1, "name": "John Doe", "email": "john@example.com" },
+  { "_id": 2, "name": "Jane Smith", "email": "jane@example.com" },
+  { "_id": 3, "name": "Sam Brown", "email": "sam@example.com" }
+]);
+
+// Insert Purchases
+db.purchases.insertMany([
+  { "student_id": 1, "book_id": 1, "purchase_date": "2024-01-10" }, // John bought a text book
+  { "student_id": 1, "book_id": 2, "purchase_date": "2024-01-15" }, // John bought a text book
+  { "student_id": 2, "book_id": 3, "purchase_date": "2024-02-10" }, // Jane bought a reference book
+  { "student_id": 2, "book_id": 4, "purchase_date": "2024-02-15" }, // Jane bought a bibliography book
+  { "student_id": 3, "book_id": 1, "purchase_date": "2024-03-10" }  // Sam bought a text book
+]);
+
+// Insert Recommendations
+db.recommendations.insertMany([
+  { "student_id": 1, "book_id": 1, "rating": 5, "comments": "Great book for engineers!" },
+  { "student_id": 1, "book_id": 2, "rating": 4, "comments": "Informative and well-written." },
+  { "student_id": 2, "book_id": 3, "rating": 5, "comments": "A must-read for chemistry students." }
+]);
+
+// a. List the books of type "text"
+db.books.aggregate([
+  { $match: { "book_type_id": 1 } },
+  { $lookup: {
+    from: "bookTypes",
+    localField: "book_type_id",
+    foreignField: "_id",
+    as: "book_details"
+  }},
+  { $unwind: "$book_details" },
+  { $project: { "title": 1, "book_details.type": 1, "_id": 0 } }
+]);
+
+// b. List the names of students who bought both text and reference types books
+db.purchases.aggregate([
+  { $match: { "book_id": { $in: [1, 2] } } },
+  { $group: { _id: "$student_id", books: { $addToSet: "$book_id" } } },
+  { $match: { "books": { $size: 2 } } },
+  { $lookup: {
+    from: "students",
+    localField: "_id",
+    foreignField: "_id",
+    as: "student_details"
+  }},
+  { $unwind: "$student_details" },
+  { $project: { "student_details.name": 1, "_id": 0 } }
+]);
+
+// c. List the most recommended book type
+db.recommendations.aggregate([
+  { $group: { _id: "$book_id", total_recommendations: { $sum: 1 } } },
+  { $sort: { total_recommendations: -1 } },
+  { $limit: 1 },
+  { $lookup: {
+    from: "books",
+    localField: "_id",
+    foreignField: "_id",
+    as: "book_details"
+  }},
+  { $unwind: "$book_details" },
+  { $project: { "book_details.title": 1, "total_recommendations": 1, "_id": 0 } }
+]);
+
+// d. List the students who bought more than one type of book
+db.purchases.aggregate([
+  { $group: { _id: "$student_id", book_types: { $addToSet: "$book_id" } } },
+  { $match: { "book_types.1": { $exists: true } } },
+  { $lookup: {
+    from: "students",
+    localField: "_id",
+    foreignField: "_id",
+    as: "student_details"
+  }},
+  { $unwind: "$student_details" },
+  { $project: { "student_details.name": 1, "_id": 0 } }
+]);

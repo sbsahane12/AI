@@ -1,50 +1,146 @@
-# Q.1) Write a python Program to print Fibonacci series
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Registration Form</title>
+    <!-- Bootstrap 4 CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
 
-def fibonacci(n):
-    a, b = 0, 1
-    for _ in range(n):
-        print(a, end=" ")
-        a, b = b, a + b
+    <div class="form-container">
+        <h2 class="text-center">Customer Registration for Travel Plan</h2>
+        <form>
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+            </div>
 
-n = int(input("Enter the number of terms in the Fibonacci series: "))
-fibonacci(n)
+            <div class="form-group">
+                <label for="contact">Contact Number</label>
+                <input type="tel" class="form-control" id="contact" placeholder="Enter your contact number" required>
+            </div>
 
-# Q.2) Write a program to implement Iterative Deepening DFS algorithm. [Goal Node = G]
+            <div class="form-group">
+                <label for="address">Address</label>
+                <textarea class="form-control" id="address" rows="3" placeholder="Enter your address" required></textarea>
+            </div>
 
-def dfs(graph, start, goal, depth):
-    if depth == 0:
-        return None
-    if start == goal:
-        return [start]
-    for neighbor in graph.get(start, []):
-        path = dfs(graph, neighbor, goal, depth - 1)
-        if path:
-            return [start] + path
-    return None
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select class="form-control" id="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
 
-def iterative_deepening_dfs(graph, start, goal, max_depth):
-    for depth in range(max_depth):
-        path = dfs(graph, start, goal, depth)
-        if path:
-            return path
-    return None
+            <div class="form-group">
+                <label>Preferred Season</label><br>
+                <input type="checkbox" id="season1" value="Summer"> Summer
+                <input type="checkbox" id="season2" value="Winter"> Winter
+                <input type="checkbox" id="season3" value="Monsoon"> Monsoon
+            </div>
 
-graph = {
-    'A': ['B', 'C'],
-    'B': ['D', 'E'],
-    'C': ['F'],
-    'D': ['G'],
-    'E': [],
-    'F': ['G'],
-    'G': []
-}
+            <div class="form-group">
+                <label for="location">Preferred Location Type</label>
+                <select class="form-control" id="location" required>
+                    <option value="">Select Location Type</option>
+                    <option value="beach">Beach</option>
+                    <option value="mountain">Mountain</option>
+                    <option value="desert">Desert</option>
+                </select>
+            </div>
 
-start = 'A'
-goal = 'G'
-max_depth = 4
-path = iterative_deepening_dfs(graph, start, goal, max_depth)
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+        </form>
+    </div>
 
-if path:
-    print("Path found:", " -> ".join(path))
-else:
-    print("No path found.")
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+
+
+
+// Movies Collection
+db.movies.insertMany([
+    {
+        _id: 1,
+        title: "Movie A",
+        business: 50000000, // highest business
+        awards: 3,
+        actors: [
+            { actor_id: 1, role: "Lead" },
+            { actor_id: 2, role: "Supporting" }
+        ]
+    },
+    {
+        _id: 2,
+        title: "Movie B",
+        business: 30000000,
+        awards: 2,
+        actors: [
+            { actor_id: 3, role: "Lead" }
+        ]
+    },
+    {
+        _id: 3,
+        title: "Movie C",
+        business: 40000000,
+        awards: 1,
+        actors: [
+            { actor_id: 1, role: "Lead" },
+            { actor_id: 4, role: "Supporting" }
+        ]
+    }
+]);
+
+
+db.actors.insertMany([
+    { _id: 1, name: "Shahrukh Khan", movies: [1, 3] },
+    { _id: 2, name: "Kajol", movies: [1] },
+    { _id: 3, name: "Amitabh Bachchan", movies: [2] },
+    { _id: 4, name: "Deepika Padukone", movies: [3] }
+]);
+
+
+
+db.movies.find({ business: { $eq: 50000000 } }).pretty();
+
+
+db.movies.aggregate([
+    { $lookup: {
+        from: "actors",
+        localField: "actors.actor_id",
+        foreignField: "_id",
+        as: "actor_details"
+    }},
+    { $project: { title: 1, business: 1, awards: 1, actor_details: 1 }}
+]);
+
+
+db.actors.find({ name: "Shahrukh Khan" }).forEach(function(actor) {
+    db.movies.find({ _id: { $in: actor.movies } }).forEach(function(movie) {
+        print(movie.title);
+    });
+});
+
+
+db.movies.find({ awards: { $gt: 2 } }).pretty();

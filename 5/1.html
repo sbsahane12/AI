@@ -1,52 +1,110 @@
-# Python program to implement List operations (any 5 operations).
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of Persons</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        table {
+            border: 2px solid #333;
+            border-radius: 10px;
+            width: 80%;
+            margin: 20px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+            border-bottom: 2px solid #ddd;
+        }
+        td {
+            border-bottom: 1px solid #ddd;
+        }
+        caption {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <table class="table table-bordered">
+        <caption>List of Persons</caption>
+        <thead>
+            <tr>
+                <th>Srno</th>
+                <th>Person Name</th>
+                <th>Age</th>
+                <th>Country</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>John Doe</td>
+                <td>30</td>
+                <td>USA</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Jane Smith</td>
+                <td>28</td>
+                <td>Canada</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Mark Johnson</td>
+                <td>35</td>
+                <td>UK</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Emily Davis</td>
+                <td>40</td>
+                <td>Australia</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Michael Brown</td>
+                <td>45</td>
+                <td>Germany</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
 
-my_list = [10, 20, 30, 40, 50]
 
-my_list.append(60)
-print("After append:", my_list)
+db.projects.insertMany([
+    { _id: 1, name: "Project Alpha", project_type: "Software", duration: 4, employees: [1, 2] },
+    { _id: 2, name: "Project Beta", project_type: "Hardware", duration: 6, employees: [3, 4] },
+    { _id: 3, name: "Project Gamma", project_type: "Research", duration: 2, employees: [2, 5] },
+    { _id: 4, name: "Project Delta", project_type: "Software", duration: 5, employees: [1, 4, 5] },
+    { _id: 5, name: "Project Epsilon", project_type: "Marketing", duration: 3, employees: [3, 5] }
+]);
 
-my_list.insert(2, 25)
-print("After insert:", my_list)
-
-my_list.remove(30)
-print("After remove:", my_list)
-
-my_list.pop()
-print("After pop:", my_list)
-
-my_list.reverse()
-print("After reverse:", my_list)
+db.employees.insertMany([
+    { _id: 1, name: "Mr. Patil", age: 40, country: "India", projects: [1, 4] },
+    { _id: 2, name: "Ms. Sharma", age: 28, country: "India", projects: [1, 3] },
+    { _id: 3, name: "Mr. Kumar", age: 35, country: "India", projects: [2, 5] },
+    { _id: 4, name: "Ms. Desai", age: 30, country: "India", projects: [2, 4] },
+    { _id: 5, name: "Mr. Mehta", age: 32, country: "India", projects: [3, 4, 5] }
+]);
 
 
-# Python program to implement Breadth First Search algorithm.
-# Graph example used as input: Initial node = 1, Goal node = 8.
+db.projects.find({ project_type: "Software" }).forEach(project => print(project.name));
 
-from collections import deque
 
-def bfs(graph, start, goal):
-    visited = set()
-    queue = deque([start])
+db.projects.find({ duration: { $gt: 3 } }).forEach(project => print(project.name));
 
-    while queue:
-        node = queue.popleft()
-        if node == goal:
-            print(node, end=" ")
-            return True
-        if node not in visited:
-            visited.add(node)
-            print(node, end=" ")
-            queue.extend(neighbor for neighbor in graph[node] if neighbor not in visited)
-    return False
 
-# Graph structure
-graph = {
-    1: [2, 3],
-    2: [4, 5],
-    3: [6, 7],
-    4: [8],
-    5: [],
-    6: [],
-    7: [8],
-    8: []
-}
-bfs(graph, start=1, goal=8)
+db.projects.aggregate([
+    { $match: { _id: 1 } },
+    { $project: { employee_count: { $size: "$employees" } } }
+]);
+
+db.projects.find({ employees: 1 }).forEach(project => print(project.name));

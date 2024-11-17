@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Form</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Student Registration Form for College Admission</h2>
+        <form action="#" method="POST">
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" class="form-control" id="firstName" name="firstName" required>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input type="text" class="form-control" id="lastName" name="lastName" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" class="form-control" id="dob" name="dob" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" class="form-control" id="phone" name="phone" pattern="[0-9]{10}" required>
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" class="form-control" id="address" name="address" required>
+            </div>
+            <div class="form-group">
+                <label for="course">Course:</label>
+                <input type="text" class="form-control" id="course" name="course" required>
+            </div>
+            <div class="form-group">
+                <label for="search">Search Course:</label>
+                <input type="search" class="form-control" id="search" name="search" placeholder="Search courses">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+db.customers.insertMany([
+    { _id: 1, name: "Mr. Patil", city: "Pimpri", loan_type: "Home Loan", loan_amt: 150000, address: "Pune", email: "patil@example.com" },
+    { _id: 2, name: "Mr. Deshmukh", city: "Mumbai", loan_type: "Car Loan", loan_amt: 50000, address: "Mumbai", email: "deshmukh@example.com" },
+    { _id: 3, name: "Mrs. Deshpande", city: "Pune", loan_type: "Education Loan", loan_amt: 70000, address: "Pune", email: "deshpande@example.com" },
+    { _id: 4, name: "Ms. Dutta", city: "Pimpri", loan_type: "Personal Loan", loan_amt: 120000, address: "Pune", email: "dutta@example.com" },
+    { _id: 5, name: "Mr. Sharma", city: "Pune", loan_type: "Home Loan", loan_amt: 200000, address: "Pune", email: "sharma@example.com" },
+    { _id: 6, name: "Mrs. Sharma", city: "Pimpri", loan_type: "Education Loan", loan_amt: 90000, address: "Pune", email: "mrs.sharma@example.com" },
+    { _id: 7, name: "Mr. Patil", city: "Mumbai", loan_type: "Car Loan", loan_amt: 80000, address: "Mumbai", email: "mr.patil@example.com" },
+    { _id: 8, name: "Mr. Kumar", city: "Pune", loan_type: "Personal Loan", loan_amt: 110000, address: "Pune", email: "kumar@example.com" },
+    { _id: 9, name: "Mr. Raghav", city: "Pimpri", loan_type: "Home Loan", loan_amt: 180000, address: "Pune", email: "raghav@example.com" },
+    { _id: 10, name: "Mrs. Deshmukh", city: "Mumbai", loan_type: "Education Loan", loan_amt: 65000, address: "Mumbai", email: "deshmukh.m@example.com" }
+]);
+
+db.customers.find({ name: { $regex: '^D' } });
+
+db.customers.find({ city: "Pimpri" }).sort({ name: -1 });
+
+db.customers.aggregate([
+    { $sort: { loan_amt: -1 } },
+    { $limit: 1 }
+]);
+
+db.customers.updateOne(
+    { name: "Mr. Patil", loan_amt: { $gt: 100000 } },
+    { $set: { address: "New Address, Pune" } }
+);
